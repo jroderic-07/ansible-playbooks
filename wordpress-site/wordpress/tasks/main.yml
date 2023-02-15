@@ -1,0 +1,48 @@
+---
+# tasks file for wordpress
+- name: Download latest WordPress file
+  become: true
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/latest.tar.gz
+    use_proxy: yes
+  environment:
+    http_proxy: http://144.25.68.176:3128
+    https_proxy: http://144.25.68.176:3128
+
+- name: Uncompress the tarball
+  become: true
+  unarchive:
+    src: /tmp/latest.tar.gz
+    dest: /tmp/ 
+    remote_src: yes
+
+- name: Uncompress the tarball
+  become: true
+  unarchive:
+    src: /tmp/latest.tar.gz
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Change ownership of the WordPress directory
+  become: true
+  file:
+    path: /var/www/html/wordpress/
+    owner: www-data
+    group: www-data
+    recurse: yes
+
+- name: Change file permissions of the WordPress folder
+  become: true
+  file:
+    path: /var/www/html/wordpress/
+    mode: 0755
+    recurse: yes
+
+- name: Make uploads directory
+  become: true
+  file:
+    path: /var/www/html/wordpress/wp-content/uploads/
+    state: directory
+    owner: www-data
+    group: www-data

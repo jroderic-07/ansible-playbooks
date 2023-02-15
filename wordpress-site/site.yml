@@ -1,0 +1,10 @@
+---
+- name: Install WordPress components
+  hosts: all
+  remote_user: ubuntu
+
+  roles:
+    - apache
+    - php
+    - mysql
+    - wordpress 

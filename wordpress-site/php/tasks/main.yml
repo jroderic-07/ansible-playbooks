@@ -1,0 +1,24 @@
+---
+# tasks file for php
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install PHP
+  become: true
+  apt: name=php state=latest
+
+- name: Install PHP-MySql
+  become: true
+  apt: name=php-mysql state=latest
+
+- name: Create PHP info file
+  become: true
+  copy:
+    dest: /var/www/html/info.php
+    content: |
+      <?php
+      phpinfo();
+      ?>

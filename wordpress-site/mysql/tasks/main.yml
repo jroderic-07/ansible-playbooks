@@ -1,0 +1,44 @@
+---
+# tasks file for mysql
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install
+  become: true
+  apt:
+    name: python3-mysqldb
+    state: latest
+
+- name: Install MariaDB server
+  become: true
+  apt: name=mariadb-server state=latest
+
+
+- name: Install MariaDB client
+  become: true
+  apt: name=mariadb-client state=latest
+
+- name: Set MariaDB root password
+  become: true
+  mysql_user:
+    name: root
+    password: "password"
+
+- name: Create WordPress database
+  mysql_db:
+    name: wordpress_db
+    state: present
+    login_user: root
+    login_password: password 
+
+- name: Create WordPress database user
+  mysql_user:
+    name: wp_user
+    host: localhost
+    password: password
+    login_user: root
+    login_password: password
+    priv: 'wordpress_db.*:ALL,GRANT'
