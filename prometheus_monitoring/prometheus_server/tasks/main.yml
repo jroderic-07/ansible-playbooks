@@ -1,2 +1,109 @@
 ---
 # tasks file for prometheus_server
+- name: Create Prometheus user group
+  become: true
+  group:
+    name: prometheus
+    state: present
+    
+- name: Create Prometheus user
+  become: true
+  user:
+    name: prometheus
+    group: prometheus
+    system: yes
+    shell: "/sbin/nologin"
+    createhome: "no"
+    state: present
+
+- name: Download Prometheus tar file
+  become: true
+  get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v2.42.0/prometheus-2.42.0.linux-amd64.tar.gz
+    dest: /tmp/prometheus.tar.gz
+
+- name: Uncompress the tarball
+  become: true
+  unarchive:
+    src: /tmp/prometheus.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Move the Prometheus file to the bin
+  become: true
+  copy:
+    src: /tmp/prometheus-2.42.0.linux-amd64/prometheus
+    dest: /usr/local/bin/
+    owner: prometheus
+    group: prometheus
+    remote_src: yes
+    mode: 0755
+
+- name: Create /etc/prometheus
+  become: true
+  file:
+    path: /etc/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Create /etc/prometheus
+  become: true
+  file:
+    path: /etc/prometheus/console_libraries
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Create /etc/prometheus
+  become: true
+  file:
+    path: /etc/prometheus/consoles
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Create /var/lib/prometheus
+  become: true
+  file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Copy Prometheus config to /etc/prometheus
+  become: true
+  copy:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    owner: prometheus
+    group: prometheus
+
+- name: Copy Prometheus systemd service file to target machine
+  become: true
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+    owner: prometheus
+    group: prometheus
+
+- name: Reload systemd and start prometheus daemon
+  become: true
+  systemd:
+    state: started
+    daemon_reload: true
+    name: prometheus
+    enabled: yes
+
+- name: Allow Apache on port 9090 on the firewall
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: 9090
+    proto: tcp
+
+- name: Enable UFW
+  become: true
+  community.general.ufw:
+    state: enabled
+    policy: allow
