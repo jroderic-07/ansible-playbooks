@@ -5,11 +5,7 @@
   get_url:
     url: https://wordpress.org/latest.tar.gz
     dest: /tmp/latest.tar.gz
-    use_proxy: yes
-  environment:
-    http_proxy: http://144.25.68.176:3128
-    https_proxy: http://144.25.68.176:3128
-
+    
 - name: Uncompress the tarball
   become: true
   unarchive:
