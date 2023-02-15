@@ -1,0 +1,7 @@
+---
+- name: Install Prometheus monitoring 
+  hosts: all
+  remote_user: ubuntu
+
+  roles:
+  - prometheus_server
