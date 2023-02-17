@@ -25,14 +25,14 @@
   become: true
   mysql_user:
     name: root
-    password: "password"
+    password: "{{ password }}"
 
 - name: Create WordPress database
   mysql_db:
     name: wordpress_db
     state: present
     login_user: root
-    login_password: password 
+    login_password: "{{ password }}"
 
 - name: Create WordPress database user
   mysql_user:
@@ -40,5 +40,5 @@
     host: localhost
     password: password
     login_user: root
-    login_password: password
+    login_password: "{{ password }}"
     priv: 'wordpress_db.*:ALL,GRANT'

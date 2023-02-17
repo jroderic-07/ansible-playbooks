@@ -21,7 +21,7 @@
 
 - name: Install Apache2
   become: true
-  apt: name=apache2 state=latest
+  apt: name=apache2 state={{ version }}
 
 - name: Start Apache2
   systemd:

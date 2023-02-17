@@ -8,11 +8,11 @@
 
 - name: Install PHP
   become: true
-  apt: name=php state=latest
+  apt: name=php state={{ php_version }}
 
 - name: Install PHP-MySql
   become: true
-  apt: name=php-mysql state=latest
+  apt: name=php-mysql state={{ phpmysql_version }}
 
 - name: Create PHP info file
   become: true

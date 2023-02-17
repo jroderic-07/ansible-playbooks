@@ -2,9 +2,11 @@
 - name: Install WordPress components
   hosts: all
   remote_user: ubuntu
+  vars_files:
+  - mysql/vars/vault.yml
 
   roles:
-    - apache
-    - php
-    - mysql
+    #- apache
+    #- php
+    #- mysql
     - wordpress 
