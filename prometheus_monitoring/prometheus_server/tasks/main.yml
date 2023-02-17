@@ -19,8 +19,12 @@
 - name: Download Prometheus tar file
   become: true
   get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/v2.42.0/prometheus-2.42.0.linux-amd64.tar.gz
+    url: https://github.com/prometheus/prometheus/releases/download/{{ prometheus_version }}/{{ prometheus_tar }}.tar.gz
     dest: /tmp/prometheus.tar.gz
+    use_proxy: yes
+  environment:
+    http_proxy: http://144.25.68.176:3128
+    https_proxy: http://144.25.68.176:3128
 
 - name: Uncompress the tarball
   become: true
@@ -32,7 +36,7 @@
 - name: Move the Prometheus file to the bin
   become: true
   copy:
-    src: /tmp/prometheus-2.42.0.linux-amd64/prometheus
+    src: /tmp/{{ prometheus_tar }}/prometheus
     dest: /usr/local/bin/
     owner: prometheus
     group: prometheus

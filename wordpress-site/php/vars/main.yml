@@ -1,2 +1,4 @@
 ---
 # vars file for php
+php_version: latest
+phpmysql_version: latest

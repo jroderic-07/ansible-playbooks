@@ -5,7 +5,7 @@
   get_url:
     url: https://wordpress.org/latest.tar.gz
     dest: /tmp/latest.tar.gz
-    
+
 - name: Uncompress the tarball
   become: true
   unarchive:

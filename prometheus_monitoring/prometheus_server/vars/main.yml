@@ -1,2 +1,4 @@
 ---
 # vars file for prometheus_server
+prometheus_version: v2.42.0
+prometheus_tar: prometheus-2.42.0.linux-amd64
